@@ -1,0 +1,56 @@
+<header>
+<meta http-equiv="refresh" content="5" />
+<h1>On going chats   </h1>
+</header>
+<%= link_to "Logout", logout_path unless !session[:user_id]%>
+<%= link_to "Login", login_path unless session[:user_id]%> 
+<%= link_to "Register", register_path unless session[:user_id]%> 
+<% if session[:user_name] != nil %>
+	<p>Welcome <%=session[:user_name]%>!</p>
+<% else %>
+	<p>Welcome! You may post messages anonymously.</p>
+<% end %>
+
+<div style="width:600px; max-height:404px; min-height:20px; border:1px solid #000; overflow:auto;" id="chat">
+	<% if @chats.length > 0 %>
+		<% @chats.each_with_index do |chat, index|%>
+		<p style="padding:4px; margin:0;">
+			<span style="color:#0071ff;"><%= (chat.username == "" ? "<Anonymous>" : chat.username)%></span>:
+			<%=chat.message%>
+		</p>
+		<% end %>
+	<% else %>
+		<p>There are no messages.</p>
+	<% end %>
+</div>
+
+<script type="text/javascript">
+	window.onload=function() {
+		document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+	}
+</script>
+<% if false %>
+<table>
+  <tr>
+    <th>Username</th>
+    <th>Message</th>
+          <th>Time</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @chats.each do |chat| %>
+  <tr>
+    <td><%= (chat.username == nil ? "Anonymous" : chat.username) %></td>
+    <td><%= chat.message %></td>
+         <td><%= chat.created_at %></td>
+  </tr>
+<% end %>
+</table>
+<% end %>
+
+<br />
+<%= render 'form' %>
+<!--<%= link_to 'New Chat', new_chat_path %>-->
+
